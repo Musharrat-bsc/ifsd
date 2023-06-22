@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script>
+    class Zoo {
+      constructor() {
+        this.animals = [];
+      }
+
+      addAnimal() {
+        const newSpecies = document.getElementById('species-input').value;
+        const newPopulation = document.getElementById('population-input').value;
+        const newMortalityRate = document.getElementById('mortality-rate-input').value;
+
+        const newAnimal = {
+          species: newSpecies,
+          population: newPopulation,
+          mortalityRate: newMortalityRate
+        };
+
+        this.animals.push(newAnimal);
+        this.loadTable();
+      }
+
+      deleteAnimal(index) {
+        this.animals.splice(index, 1);
+        this.loadTable();
+      }
+
+      loadTable() {
+        const tableElement = document.getElementById('table');
+        tableElement.innerHTML = '';
+
+        const headerRowElement = document.createElement('tr');
+        headerRowElement.appendChild(this.createElement('th', 'Index'));
+        headerRowElement.appendChild(this.createElement('th', 'Species'));
+        headerRowElement.appendChild(this.createElement('th', 'Population'));
+        headerRowElement.appendChild(this.createElement('th', 'Mortality Rate'));
+        headerRowElement.appendChild(this.createElement('th', 'Action'));
+        tableElement.appendChild(headerRowElement);
+
+        for (let i = 0; i < this.animals.length; i++) {
+          const animal = this.animals[i];
+          const rowElement = document.createElement('tr');
+          rowElement.appendChild(this.createElement('td', i));
+          rowElement.appendChild(this.createElement('td', animal.species));
+          rowElement.appendChild(this.createElement('td', animal.population));
+          rowElement.appendChild(this.createElement('td', animal.mortalityRate));
+
+          const deleteButton = document.createElement('button');
+          deleteButton.innerText = 'Delete';
+          deleteButton.onclick = () => {
+            this.deleteAnimal(i);
+          };
+          rowElement.appendChild(this.createElement('td')).appendChild(deleteButton);
+          tableElement.appendChild(rowElement);
+        }
+      }
+
+      createElement(tag, text) {
+        const element = document.createElement(tag);
+        element.innerText = text;
+        return element;
+      }
+    }
+
+    const zoo = new Zoo();
+
+    function addNewAnimal() {
+      zoo.addAnimal();
+    }
+  </script>
+</head>
+
+<body onload="zoo.loadTable();">
+  <h1>Zoo Animal List</h1>
+  <table id="table"></table>
+  <hr>
+  <div>
+    <h1>New Animal</h1>
+    Species: <input type="text" id="species-input" />
+    <br><br>
+    Population: <input type="number" id="population-input" />
+    <br><br>
+    Mortality Rate: <input type="number" id="mortality-rate-input" step="0.01" />
+    <br><br>
+    <button onclick="addNewAnimal();">Add</button>
+  </div>
+   
+</body>
+
+</html>
